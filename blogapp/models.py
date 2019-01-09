@@ -20,6 +20,8 @@ class Article(models.Model):
 	article_author = models.ForeignKey(Author, on_delete=models.CASCADE)
 	title = models.CharField(max_length=200)
 	body = models.TextField()
+	posted_on = models.DateTimeField(auto_now=False, auto_now_add=True)
+	updated_on = models.DateTimeField(auto_now=True, auto_now_add=False)
 	category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 	def __str__(self):
