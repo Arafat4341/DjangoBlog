@@ -3,5 +3,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('index/', views.index),
+    path('', views.index),
+    path('author/<name>', views.getauthor, name='author'),
+    path('article/<int:id>', views.getsingle, name='single_post')
+
 ]

@@ -1,4 +1,10 @@
 from django.shortcuts import render, HttpResponse
 
 def index(request):
-	return HttpResponse('<h1>This is page</h1>')
+	return render(request, 'index.html')
+
+def getauthor(request, name):
+	return render(request, 'profile.html')
+
+def getsingle(request, id):
+	return render(request, 'single.html')
