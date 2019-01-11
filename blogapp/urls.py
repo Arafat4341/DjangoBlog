@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('', views.index),
     path('author/<name>', views.getauthor, name='author'),
-    path('article/<int:id>', views.getsingle, name='single_post')
+    path('article/<int:id>', views.getsingle, name='single_post'),
+    path('topic/<name>', views.getTopic, name='topic'),
 
 ]
