@@ -1,16 +1,31 @@
 from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
 from .models import Author, Category, Article
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 
 def index(request):
 	post = Article.objects.all()
+	paginator = Paginator(post, 8) # Show 8 contacts per page
+	page = request.GET.get('page')
+	total_article = paginator.get_page(page)
 	context = {
-		"post": post
+		"post": total_article
 	}
 	return render(request, 'index.html', context)
 
 def getauthor(request, name):
-	return render(request, 'profile.html')
+	post_author = get_object_or_404(User, username=name)
+	auth = get_object_or_404(Author, name=post_author.id)
+	post = Article.objects.filter(article_author=auth.id)
+	paginator = Paginator(post, 4) # Show 8 contacts per page
+	page = request.GET.get('page')
+	total_article = paginator.get_page(page)
+	context = {
+		"auth":auth,
+		"post":total_article
+	}
+	return render(request, 'profile.html', context)
 
 def getsingle(request, id):
 	post = get_object_or_404(Article, pk=id)
@@ -28,7 +43,10 @@ def getsingle(request, id):
 def getTopic(request, name):
 	cat = get_object_or_404(Category, name=name)
 	post = Article.objects.filter(category=cat.id)
-	return render(request, 'category.html', {'post':post, 'cat':cat})
+	paginator = Paginator(post, 4) # Show 8 contacts per page
+	page = request.GET.get('page')
+	total_article = paginator.get_page(page)
+	return render(request, 'category.html', {'post':total_article, 'cat':cat})
 
 def getLogin(request):
 	if request.user.is_authenticated:
