@@ -3,9 +3,16 @@ from .models import Author, Category, Article
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 def index(request):
 	post = Article.objects.all()
+	search = request.GET.get('q')
+	if search:
+		post = post.filter(
+			Q(title__icontains=search) |
+			Q(body__icontains=search)
+		)
 	paginator = Paginator(post, 8) # Show 8 contacts per page
 	page = request.GET.get('page')
 	total_article = paginator.get_page(page)
