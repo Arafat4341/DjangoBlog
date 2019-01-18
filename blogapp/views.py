@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Q
 from .form import createForm
+from django.contrib import messages
 
 def index(request):
 	post = Article.objects.all()
@@ -68,6 +69,8 @@ def getLogin(request):
 			if auth is not None:
 				login(request, auth)
 				return redirect('index')
+			else:
+				messages.add_message(request, messages.ERROR, 'WRONG USERNAME OR PASSWORD!')
 	return render(request, 'login.html')
 
 def getLogout(request):
@@ -104,7 +107,9 @@ def getUpdate(request, pid):
 			instance = form.save(commit=False)
 			instance.article_author = u
 			instance.save()
+			messages.success(request, 'Article updated successfully!')
 			return redirect('profile')
+
 		return render(request, 'create.html', {"form":form})
 	else:
 		return redirect('login')
@@ -113,6 +118,7 @@ def getDelete(request, pid):
 	if request.user.is_authenticated:
 		post = get_object_or_404(Article, id=pid)
 		post.delete()
+		messages.warning(request, 'Article is deleted')
 		return redirect('profile')
 	else:
 		return redirect('login')
