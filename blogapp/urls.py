@@ -12,6 +12,7 @@ urlpatterns = [
     path('create', views.getcreate, name='create'),
     path('profile', views.getProfile, name='profile'),
     path('update/<int:pid>', views.getUpdate, name='update'),
-    path('delete/<int:pid>', views.getDelete, name='delete')
+    path('delete/<int:pid>', views.getDelete, name='delete'),
+    path('register', views.getRegister, name='register')
 
 ]

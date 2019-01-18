@@ -4,8 +4,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Q
-from .form import createForm
+from .form import createForm, RegisterUser
 from django.contrib import messages
+
 
 def index(request):
 	post = Article.objects.all()
@@ -122,3 +123,12 @@ def getDelete(request, pid):
 		return redirect('profile')
 	else:
 		return redirect('login')
+
+def getRegister(request):
+	form = RegisterUser(request.POST or None)
+	if form.is_valid():
+		instance = form.save(commit=False)
+		instance.save()
+		messages.success(request, 'Registration successfully completed!')
+		return redirect('login')
+	return render(request, 'register.html', {"form":form})
