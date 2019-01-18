@@ -34,7 +34,7 @@
 				<tr>
 					<td>{{ p.title }}</td>
 					<td>{{ p.posted_on }}</td>
-					<td><a href="">Delete</a> || <a href="">Edit</a></td>
+					<td><a href="{% url 'delete' pid=p.id %}">Delete</a> || <a href="{% url 'update' pid=p.id %}">Edit</a></td>
 				</tr>
 			{% endfor %}
 		</tbody>
