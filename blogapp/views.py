@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Q
+from .form import createForm
 
 def index(request):
 	post = Article.objects.all()
@@ -72,3 +73,24 @@ def getLogin(request):
 def getLogout(request):
 	logout(request)
 	return redirect('index')
+
+def getcreate(request):
+	if request.user.is_authenticated:
+		u = get_object_or_404(Author, name=request.user.id)
+		form = createForm(request.POST or None, request.FILES or None)
+		if form.is_valid():
+			instance = form.save(commit=False)
+			instance.article_author = u
+			instance.save()
+			return redirect('index')
+		return render(request, 'create.html', {"form":form})
+	else:
+		return redirect('login')
+
+def getProfile(request):
+	if request.user.is_authenticated:
+		author = get_object_or_404(Author, name=request.user.id)
+		post = Article.objects.filter(article_author=request.user.id)
+		return render(request, 'logged_in_profile.html', {"post":post, "user":author})
+	else:
+		return redirect('login')
