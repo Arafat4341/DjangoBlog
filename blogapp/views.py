@@ -1,10 +1,10 @@
 from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
-from .models import Author, Category, Article
+from .models import Author, Category, Article, Comment
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Q
-from .form import createForm, RegisterUser, CreateAuthor
+from .form import createForm, RegisterUser, CreateAuthor, CommentForm
 from django.contrib import messages
 
 
@@ -41,12 +41,21 @@ def getsingle(request, id):
 	post = get_object_or_404(Article, pk=id)
 	first = Article.objects.first()
 	last = Article.objects.last()
+	getComment = Comment.objects.filter(post=id)
 	related = Article.objects.filter(category=post.category).exclude(id=id)[:4]
+	form = CommentForm(request.POST or None)
+	if form.is_valid():
+		instance = form.save(commit=False)
+		instance.post = post
+		instance.save()
+
 	context = {
 		"post":post,
 		"first":first,
 		"last":last,
-		"related":related
+		"related":related,
+		"form":form,
+		"comment":getComment
 	}
 	return render(request, 'single.html', context)
 

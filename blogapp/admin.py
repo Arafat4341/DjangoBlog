@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Author, Category, Article
+from .models import Author, Category, Article, Comment
 
 
 class authorModel(admin.ModelAdmin):
@@ -27,4 +27,10 @@ class categoryModel(admin.ModelAdmin):
 
 admin.site.register(Category, categoryModel)
 
+class commentModel(admin.ModelAdmin):
+	list_display = ['__str__']
+	search_fields = ['__str__']
+	class Meta:
+		Model = Comment
 
+admin.site.register(Comment, commentModel)

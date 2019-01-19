@@ -57,8 +57,31 @@
 						<a href="{% url 'single_post' id=r.id %}"><h2 class="fh5co-article-title animate-box">{{ r.title }}</h2></a>
 						<p>{{ r.body|truncatewords:10 }}</p>
 					</div>
+
 				{% endfor %}
 			</div>
+		</div>
+		<h3 class="well">Comments</h3>
+		<div class="single_post_comment">
+			{% for c in comment %}
+				<div class="single_comment">
+					<h4>{{ c.name }}</h4>
+					<h5>{{ c.email }}</h5>
+					<p>{{ c.post_comment }}</p>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Comment</h3>
+		  </div>
+		  <div class="panel-body">
+		    <form action="" method="POST">
+		    	{% csrf_token %}
+		    	{{ form.as_p }}
+		    	<button class="btn btn-primary" type="submit">Comment</button>
+		    </form>
+		  </div>
 		</div>
 	</div>
 	{% endblock %}
