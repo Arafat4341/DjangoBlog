@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 class Author(models.Model):
 	name = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -17,6 +18,8 @@ class Category(models.Model):
 		return self.name
 
 
+
+
 class Article(models.Model):
 	article_author = models.ForeignKey(Author, on_delete=models.CASCADE)
 	title = models.CharField(max_length=200)
@@ -28,6 +31,15 @@ class Article(models.Model):
 
 	def __str__(self):
 		return self.title
+
+	def get_single_url(self):
+		return reverse('single_post', kwargs={"id":self.id})
+
+	def get_category_url(self):
+		return reverse('topic', kwargs={"name":self.category})
+
+	def get_author_url(self):
+		return reverse('author', kwargs={"name":self.article_author})
 		
 
 class Comment(models.Model):
