@@ -23,9 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '0a3_j9s7gqz(tl(7pky(8don71eum*j-&4eao-i#2^fkqe$j#_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+DEBUG = False
+ALLOWED_HOSTS = ['mrmapp.herokuapp.com']
 
 
 # Application definition
