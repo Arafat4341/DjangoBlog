@@ -10,8 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 import django_heroku
-# Activate Django-Heroku.
-django_heroku.settings(locals())
+
 
 
 from django.contrib.messages import constants as messages
@@ -125,8 +124,13 @@ USE_TZ = True
 
 # STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
@@ -138,3 +142,6 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert alert-danger',
     messages.DEBUG: 'alert alert-info',
 }
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
